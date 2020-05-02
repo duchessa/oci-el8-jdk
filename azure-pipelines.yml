@@ -22,7 +22,7 @@ stages:
 
   jobs:  
 
-  - job: 'Build JDK 11'
+  - job: 'Build_JDK_11'
     displayName: 'Build JDK 11'
     pool:
       vmImage: 'ubuntu-latest'
@@ -46,7 +46,7 @@ stages:
           11.$(tag)
           11
  
-  - job: 'Build JDK 8'
+  - job: 'Build_JDK_8'
     displayName: 'Build JDK 8'
     pool:
       vmImage: 'ubuntu-latest'
