@@ -1,6 +1,14 @@
 trigger:
 - master
 
+schedules:
+  - cron: "0 0 * * 1"
+    displayName: Weekly Build
+    branches:
+      include:
+      - master
+    always: true
+
 resources:
 - repo: self
 
@@ -8,21 +16,57 @@ variables:
   tag: '$(Build.BuildId)'
 
 stages:
-- stage: Build
-  displayName: Build image
+
+- stage: 'Build'
+  displayName: 'Build & Push Images'
+
   jobs:  
-  - job: Build
-    displayName: Build
+
+  - job: 'Build JDK 11'
+    displayName: 'Build JDK 11'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
-      displayName: Build and Push Image
+      displayName: 'Build JDK 11 Image'
       inputs:
-        containerRegistry: 'Beauty & Bellies DockerHub'
-        repository: 'duchessa/el8-jdk'
-        command: 'buildAndPush'
+        command: 'build'
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         tags: |
           11.$(tag)
           11
+    - task: Docker@2
+      displayName: 'Push JDK 11 Image'
+      inputs:
+        containerRegistry: 'Beauty & Bellies DockerHub'
+        repository: 'duchessa/el8-jdk'
+        command: 'push'
+        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        tags: |
+          11.$(tag)
+          11
+ 
+  - job: 'Build JDK 8'
+    displayName: 'Build JDK 8'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: Docker@2
+        displayName: 'Build JDK 8 Image'
+        inputs:
+          command: 'build'
+          dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+          arguments: '--build-arg JDK_VERSION=8'
+          tags: |
+            8.$(tag)
+            8
+      - task: Docker@2
+        displayName: 'Push JDK 8 Image'
+        inputs:
+          containerRegistry: 'Beauty & Bellies DockerHub'
+          repository: 'duchessa/el8-jdk'
+          command: 'push'
+          dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+          tags: |
+            8.$(tag)
+            8
