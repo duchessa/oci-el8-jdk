@@ -20,7 +20,7 @@ stages:
       displayName: Build and Push Image
       inputs:
         containerRegistry: 'Beauty & Bellies DockerHub'
-        repository: 'el8-jdk'
+        repository: 'duchessa/el8-jdk'
         command: 'buildAndPush'
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         tags: |
