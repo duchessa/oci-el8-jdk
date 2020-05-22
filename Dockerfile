@@ -3,7 +3,7 @@ FROM oraclelinux:8
 LABEL maintainer="ali.r <at> beautyandbellies.com"
 
 ARG NODE_VERSION=12
-ARG GRAAL_VERSION=20.0.0
+ARG GRAAL_VERSION=20.1.0
 ARG JDK_VERSION=11
 ARG M2_VERSION=3.6.3
 
