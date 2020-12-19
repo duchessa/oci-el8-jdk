@@ -2,12 +2,12 @@ trigger:
 - master
 
 schedules:
-  - cron: "0 0 * * 1"
-    displayName: Weekly Build
-    branches:
-      include:
-      - master
-    always: true
+- cron: "0 0 * * 1"
+  displayName: Weekly Build
+  branches:
+    include:
+    - master
+  always: true
 
 resources:
 - repo: self
@@ -30,17 +30,18 @@ stages:
     - task: Docker@2
       displayName: 'Build JDK 11 Image'
       inputs:
-        containerRegistry: 'Beauty & Bellies DockerHub'
+        containerRegistry: 'Duchessa DockerHub'
         repository: 'duchessa/el8-jdk'
         command: 'build'
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         tags: |
           11.$(tag)
           11
+  - ${{ if ne(Build.Reason, 'PullRequest') }}:
     - task: Docker@2
       displayName: 'Push JDK 11 Image'
       inputs:
-        containerRegistry: 'Beauty & Bellies DockerHub'
+        containerRegistry: 'Duchessa DockerHub'
         repository: 'duchessa/el8-jdk'
         command: 'push'
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
@@ -56,7 +57,7 @@ stages:
       - task: Docker@2
         displayName: 'Build JDK 8 Image'
         inputs:
-          containerRegistry: 'Beauty & Bellies DockerHub'
+          containerRegistry: 'Duchessa DockerHub'
           repository: 'duchessa/el8-jdk'
           command: 'build'
           dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
@@ -64,10 +65,11 @@ stages:
           tags: |
             8.$(tag)
             8
+    - ${{ if ne(Build.Reason, 'PullRequest') }}:
       - task: Docker@2
         displayName: 'Push JDK 8 Image'
         inputs:
-          containerRegistry: 'Beauty & Bellies DockerHub'
+          containerRegistry: 'Duchessa DockerHub'
           repository: 'duchessa/el8-jdk'
           command: 'push'
           dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
