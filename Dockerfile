@@ -51,10 +51,10 @@ RUN dnf -y module enable nodejs:${NODE_VERSION} \
 ENV JAVA_HOME=/opt/graalvm-ce-java${JDK_VERSION}-${GRAAL_VERSION}
 RUN curl -L --retry 5 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAAL_VERSION}/graalvm-ce-java${JDK_VERSION}-linux-amd64-${GRAAL_VERSION}.tar.gz | tar xzf - -C /opt
 RUN ${JAVA_HOME}/bin/gu install native-image
-RUN for ex in "${JAVA_HOME}/bin/"*; do f="$(basename "${ex}")"; [ ! -e "/usr/bin/${f}" ]; alternatives --install "/usr/bin/${f}" "${f}" "${ex}" 30000; done
 # Ensure distribution npm & npx takes precedence over Graal
-RUN alternatives --install /usr/bin/npm npm /usr/lib/node_modules/npm/bin/npm-cli.js 40000
-RUN alternatives --install /usr/bin/npx npm /usr/lib/node_modules/npm/bin/npx-cli.js 40000
+RUN rm -fv ${JAVA_HOME}/bin/node ${JAVA_HOME}/bin/npm ${JAVA_HOME}/bin/npx
+# Add Graal Binaries as alternatives
+RUN for ex in "${JAVA_HOME}/bin/"*; do f="$(basename "${ex}")"; [ ! -e "/usr/bin/${f}" ]; alternatives --install "/usr/bin/${f}" "${f}" "${ex}" 30000; done
 
 
 # Install Maven
