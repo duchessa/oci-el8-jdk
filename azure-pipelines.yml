@@ -37,9 +37,9 @@ stages:
         tags: |
           11.$(tag)
           11
-  - ${{ if ne(Build.Reason, 'PullRequest') }}:
     - task: Docker@2
       displayName: 'Push JDK 11 Image'
+      condition: ne(Build.Reason, 'PullRequest')
       inputs:
         containerRegistry: 'Duchessa DockerHub'
         repository: 'duchessa/el8-jdk'
@@ -65,9 +65,9 @@ stages:
           tags: |
             8.$(tag)
             8
-    - ${{ if ne(Build.Reason, 'PullRequest') }}:
       - task: Docker@2
         displayName: 'Push JDK 8 Image'
+        condition: ne(Build.Reason, 'PullRequest')
         inputs:
           containerRegistry: 'Duchessa DockerHub'
           repository: 'duchessa/el8-jdk'
