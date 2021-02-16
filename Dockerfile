@@ -3,7 +3,7 @@ FROM oraclelinux:8
 LABEL maintainer="ali.r <at> zantekk.com"
 
 ARG NODE_VERSION=14
-ARG GRAAL_VERSION=21.0.0
+ARG GRAAL_VERSION=21.0.0.2
 ARG JDK_VERSION=11
 ARG M2_VERSION=3.6.3
 
