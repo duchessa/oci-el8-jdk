@@ -1,11 +1,9 @@
 FROM oraclelinux:8
 
-LABEL maintainer="ali.r <at> zantekk.com"
-
 ARG NODE_VERSION=14
-ARG GRAAL_VERSION=21.0.0.2
+ARG GRAAL_VERSION=21.1.0
 ARG JDK_VERSION=11
-ARG M2_VERSION=3.6.3
+ARG M2_VERSION=3.8.1
 
 USER root
 
@@ -60,3 +58,6 @@ RUN for ex in "${JAVA_HOME}/bin/"*; do f="$(basename "${ex}")"; [ ! -e "/usr/bin
 # Install Maven
 RUN curl -L --retry 5 http://www-us.apache.org/dist/maven/maven-3/${M2_VERSION}/binaries/apache-maven-${M2_VERSION}-bin.tar.gz | tar xzf - -C /opt
 RUN alternatives --install /usr/bin/mvn mvn /opt/apache-maven-${M2_VERSION}/bin/mvn 30000
+
+LABEL "com.azure.dev.pipelines.agent.handler.node.path"="/usr/bin/node"
+LABEL maintainer="dev <at> zantekk.com"
